@@ -17,3 +17,12 @@ def load_faction_list(list_name):
     with open(list_name + '.pkl', 'rb') as open_file:
         faction_list = dill.load(open_file)
     return faction_list
+
+def save_universe(universe_name, universe):
+    with open(universe_name + '.pkl', 'wb') as open_file:
+        dill.dump(universe, open_file)
+
+def load_universe(universe_name):
+    with open(universe_name + '.pkl', 'rb') as open_file:
+        universe = dill.load(open_file)
+    return universe

@@ -24,13 +24,13 @@ class Universe:
 	        faction = None
 	        if (best_stat == 1):
 	            #name, force rating, cunning, wealth, fac,creds, tags, homeworld
-	            faction = Faction.Faction(names[name], 2, 1, 1, 1, None, homeworld, Colour.colours[i])
+	            faction = Faction.Faction(names[name], 2, 1, 1, 1, None, homeworld, Colour.faction_colours[i])
 	        elif (best_stat == 2):
 	            #name, force rating, cunning, wealth, fac,creds, tags, homeworld
-	            faction = Faction.Faction(names[name], 1, 2, 1, 1, None, homeworld, Colour.colours[i])
+	            faction = Faction.Faction(names[name], 1, 2, 1, 1, None, homeworld, Colour.faction_colours[i])
 	        elif (best_stat == 3):
 	            #name, force rating, cunning, wealth, fac,creds, tags, homeworld
-	            faction = Faction.Faction(names[name], 1, 1, 2, 1, None, homeworld, Colour.colours[i])
+	            faction = Faction.Faction(names[name], 1, 1, 2, 1, None, homeworld, Colour.faction_colours[i])
 	        self.universe_map[homeworld].faction = faction
 	        self.factions.append(faction)
 	    pass

@@ -3,6 +3,7 @@ from Draw import Pygame_Object
 import pygame, random
 
 import Colour
+import SaveLoad
 
 import Universe
 import Tile
@@ -21,10 +22,13 @@ def main():
     x = 1000
     y = 800
 
-    map_size = 5
-    universe = Universe.Universe()
-    universe.create_map(map_size)
-    universe.create_factions(map_size + 3)
+    try:
+        universe = SaveLoad.load_universe("universe")
+    except:
+        map_size = 5
+        universe = Universe.Universe()
+        universe.create_map(map_size)
+        universe.create_factions(map_size + 3)
 
     #pygame_object = Pygame_Object(1920,1080)
     pygame_object = Pygame_Object(x,y)
@@ -56,8 +60,10 @@ def main():
                 pygame_object.draw_polygon(Colour.black, new_points)
 
         pygame_object.draw_ui_buttons()
-        pass
-    pass
+        
+    
+
+    SaveLoad.save_universe("universe", universe)
 
 if __name__ == '__main__':
     main()
