@@ -27,6 +27,7 @@ def main():
     except:
         map_size = 5
         universe = Universe.Universe()
+        #currently need more things before going over faction size 8
         universe.create_map(map_size)
         universe.create_factions(map_size + 3)
 
@@ -39,7 +40,19 @@ def main():
     layout_rim = Tile.Layout(Tile.layout_pointy, Tile.Point(28,28), Tile.Point(x/2,y/2))
 
     while (error == 0):
-        error = pygame_object.update()
+
+        pygame_object.game_display.fill(Colour.black)
+
+        error = pygame_object.capture_events()
+        #Ui elements selected here
+        if (pygame_object.mouse_released):
+            #mouse button finished clicking button
+            if (pygame_object.ui_element_clicked[0]): #end turn button clicked
+                universe.turn = (universe.turn + 1) % len(universe.factions)
+
+
+            pygame_object.mouse_released = False
+            pygame_object.clear_ui_elements()
 
         for planet in universe.universe_map:
 
@@ -60,8 +73,9 @@ def main():
                 pygame_object.draw_polygon(Colour.black, new_points)
 
         pygame_object.draw_ui_buttons()
-        
+        pygame_object.draw_stats(universe.factions[universe.turn])
     
+        pygame_object.update()
 
     SaveLoad.save_universe("universe", universe)
 

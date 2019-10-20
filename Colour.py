@@ -12,6 +12,7 @@ red_blue = (255,0,125)
 
 white = (255,255,255)
 gray = (200,200,200)
+dark_gray = (100,100,100)
 black = (0,0,0)
 
 faction_colours = []

@@ -7,30 +7,32 @@ import Tile
 import Planet
 import Faction
 
-names = ["a", "b", "c", "d", "e"]
+names = ["Empire", "Republic", "Pirates", "Psionics", 
+		"Rebellion", "Natives", "Aliens", "Robots"]
 
 class Universe:
 
 	def __init__(self):
 		self.universe_map = {}
 		self.factions = []
+		self.turn = 0
 
 	def create_factions(self, amount):
 	    for i in range(amount):
 	        best_stat = random.randint(1,3)
-	        name = random.randint(0,4)
+	        name = names[i]
 	        homeworld = random.choice(list(self.universe_map.keys()))
 	        #print(homeworld)
 	        faction = None
 	        if (best_stat == 1):
 	            #name, force rating, cunning, wealth, fac,creds, tags, homeworld
-	            faction = Faction.Faction(names[name], 2, 1, 1, 1, None, homeworld, Colour.faction_colours[i])
+	            faction = Faction.Faction(name, 2, 1, 1, 1, None, homeworld, Colour.faction_colours[i])
 	        elif (best_stat == 2):
 	            #name, force rating, cunning, wealth, fac,creds, tags, homeworld
-	            faction = Faction.Faction(names[name], 1, 2, 1, 1, None, homeworld, Colour.faction_colours[i])
+	            faction = Faction.Faction(name, 1, 2, 1, 1, None, homeworld, Colour.faction_colours[i])
 	        elif (best_stat == 3):
 	            #name, force rating, cunning, wealth, fac,creds, tags, homeworld
-	            faction = Faction.Faction(names[name], 1, 1, 2, 1, None, homeworld, Colour.faction_colours[i])
+	            faction = Faction.Faction(name, 1, 1, 2, 1, None, homeworld, Colour.faction_colours[i])
 	        self.universe_map[homeworld].faction = faction
 	        self.factions.append(faction)
 	    pass

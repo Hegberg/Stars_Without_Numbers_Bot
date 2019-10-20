@@ -2,7 +2,17 @@
 import math
 
 class Faction: #PC created start with 2 rating in primary and 1 in others, 8 hp, 1 asset in primary
-    
+    """
+    Rating | XP Cost | Hit Point Value
+    1           -           1
+    2           2           2
+    3           4           4
+    4           6           6
+    5           9           9
+    6           12          12
+    7           16          16
+    8           20          20
+    """
     def __init__(self, name, force_rating, cunning_rating, wealth_rating, fac_creds, tags, homeworld, colour):
         self.name = name
         #maximum hit points of a faction are equal to 4
@@ -11,6 +21,7 @@ class Faction: #PC created start with 2 rating in primary and 1 in others, 8 hp,
         self.max_hp = 4 + force_rating + cunning_rating + wealth_rating
 
         self.hp = self.max_hp
+        self.experience = 0
 
         self.force_rating = force_rating
         self.cunning_rating = cunning_rating
@@ -28,7 +39,7 @@ class Faction: #PC created start with 2 rating in primary and 1 in others, 8 hp,
     def turn(self):
         self.generate_income()
 
-        self.choose_action()
+        #self.choose_action() #only do if bot
         
 
     def generate_income(self):
