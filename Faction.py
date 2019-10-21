@@ -36,6 +36,8 @@ class Faction: #PC created start with 2 rating in primary and 1 in others, 8 hp,
         self.assests = None
         self.bases = None
 
+        self.goal = None
+
     def turn(self):
         self.generate_income()
 

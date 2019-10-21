@@ -49,6 +49,7 @@ def main():
             #mouse button finished clicking button
             if (pygame_object.ui_element_clicked[0]): #end turn button clicked
                 universe.turn = (universe.turn + 1) % len(universe.factions)
+                pygame_object.turn_end()
 
 
             pygame_object.mouse_released = False
@@ -62,7 +63,7 @@ def main():
             pygame_object.draw_polygon(Colour.white, new_points)
 
         for planet in universe.universe_map:
-            
+            #white tiling behind systems
             points = Tile.polygon_corners_with_spacing(layout, universe.universe_map[planet].location, 1.155)
             new_points = hex_point_to_pygame_point(points)
 
@@ -72,8 +73,11 @@ def main():
             else:
                 pygame_object.draw_polygon(Colour.black, new_points)
 
-        pygame_object.draw_ui_buttons()
         pygame_object.draw_stats(universe.factions[universe.turn])
+        pygame_object.draw_action_selected()
+        pygame_object.draw_goal_selected()
+
+        pygame_object.draw_ui_buttons()
     
         pygame_object.update()
 
