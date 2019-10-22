@@ -32,6 +32,9 @@ class Hex:#int represtation of a hex
     def __ne__(self, a):
         return not(self == a)
 
+    def get_coords(self):
+        return (self.q,self.r,self.s)
+
 class FractionalHex:#fractional represtation of a hex
     def __init__(self, q, r, s): #qrs instead of xyz
     
@@ -47,6 +50,9 @@ class FractionalHex:#fractional represtation of a hex
 
     def __ne__(self, a):
         return not(self == a)
+
+    def get_coords(self):
+        return (self.q,self.r,self.s)
 
 
 

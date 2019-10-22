@@ -2,10 +2,12 @@ import pygame
 
 import Colour
 import Faction
+import Universe
+import Tile
 
 class Pygame_Object(object):
     
-    def __init__(self, x, y):
+    def __init__(self, x, y, universe):
         self.game_display = None
         self.x = x
         self.y = y
@@ -47,6 +49,15 @@ class Pygame_Object(object):
         self.current_goal = None
 
         self.mouse_pos = None
+
+        self.universe = universe
+
+        self.layout_rim = Tile.Layout(Tile.layout_pointy, Tile.Point(24,24), Tile.Point(x/2,y/2))
+        self.layout = Tile.Layout(Tile.layout_pointy, Tile.Point(28,28), Tile.Point(x/2,y/2))
+
+        self.current_view = 0 #0 -> universe view, 1 inner system view
+        self.drawn_systems = []
+        self.drawn_planets = []
 
     def pygame_init(self):
         pygame.init()
@@ -138,12 +149,30 @@ class Pygame_Object(object):
                     result = self.check_sub_ui_box(i, self.sub_action_buttons[i])
                     if (result):
                         self.current_action = i
+                return #once done checking sub buttons, no need to check rest,
+                        #keep from checking possible objects behind it
+
             if (self.ui_element_clicked[2]):
                 for i in range(len(self.sub_goal_buttons)):
                     result = self.check_sub_ui_box(i, self.sub_goal_buttons[i])
                     if (result):
                         self.current_goal = i
                 #print(self.ui_sub_element_clicked)
+                return #once done checking sub buttons, no need to check rest, 
+                        #keep from checking possible objects behind it
+
+            #check current_view if in universe view
+            if (self.current_view == 0):
+                for i in range(len(self.drawn_systems)):
+                    result = self.check_polygon(self.drawn_systems[i])
+
+                return #once done checking sub buttons, no need to check rest, 
+                        #keep from checking possible objects behind it
+
+            if (self.current_view == 1):
+
+                return #once done checking sub buttons, no need to check rest, 
+                        #keep from checking possible objects behind it
         except: #sub ui wasn't created yet
             pass
 
@@ -169,6 +198,11 @@ class Pygame_Object(object):
         else:
             self.ui_sub_element_clicked[ui_element] = False
             return False
+
+    #get math to check if in polygon
+    def check_polygon(self, polygon):
+
+        return False
 
     def draw_actions_sub_menu(self):
         for i in range(len(self.sub_action_buttons)): #draw bottom up but want alphabetical from top down, so reverse a few array indexs
@@ -216,7 +250,7 @@ class Pygame_Object(object):
         #Tags
         self.render_text("Tags: ", faction.tags, self.faction_info_location[0] + 175, self.faction_info_location[1] + 0)
         #Homeworld
-        self.render_text("Homeworld: ", faction.homeworld, self.faction_info_location[0] + 175, self.faction_info_location[1] + 20)
+        self.render_text("Homeworld: ", faction.homeworld.location.get_coords(), self.faction_info_location[0] + 175, self.faction_info_location[1] + 20)
 
         #Force Rating
         self.render_text("Force Rating: ", faction.force_rating, self.faction_info_location[0] + 175, self.faction_info_location[1] + 40)
@@ -252,3 +286,41 @@ class Pygame_Object(object):
     def turn_end(self):
         self.current_action = None
         self.current_goal = None
+
+    def hex_point_to_pygame_point(self, points):#list of hex points
+        pygame_points = []
+        for point in points:
+            pygame_points.append((point.x, point.y))
+
+        return pygame_points
+
+    def draw_universe_view(self):
+        self.drawn_systems.clear()
+        for system in self.universe.universe_map:
+            #white tiling behind systems
+            points = Tile.polygon_corners(self.layout, self.universe.universe_map[system].location)
+            new_points = self.hex_point_to_pygame_point(points)
+
+            self.draw_polygon(Colour.white, new_points)
+
+        for system in self.universe.universe_map:
+            #systems with spacing in between
+            points = Tile.polygon_corners_with_spacing(self.layout_rim, self.universe.universe_map[system].location, 1.155)
+            new_points = self.hex_point_to_pygame_point(points)
+
+            if (self.universe.universe_map[system].controlling_faction != None):
+                self.drawn_systems.append(new_points)
+                self.draw_polygon(self.universe.universe_map[system].controlling_faction.colour, new_points)
+                #print(universe.universe_map[system].faction.colour)
+            else:
+                self.drawn_systems.append(new_points)
+                self.draw_polygon(Colour.black, new_points)
+
+    def draw_inner_system_view(self):
+        self.drawn_planets.clear()
+
+    def draw_view(self):
+        if (self.current_view == 0):#universe view
+            self.draw_universe_view()
+        elif (self.current_view == 1):
+            self.draw_inner_system_view()

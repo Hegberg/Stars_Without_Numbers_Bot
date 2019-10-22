@@ -32,16 +32,23 @@ def main():
         universe.create_factions(map_size + 3)
 
     #pygame_object = Pygame_Object(1920,1080)
-    pygame_object = Pygame_Object(x,y)
+    pygame_object = Pygame_Object(x,y, universe)
 
     error = 0
-
-    layout = Tile.Layout(Tile.layout_pointy, Tile.Point(24,24), Tile.Point(x/2,y/2))
-    layout_rim = Tile.Layout(Tile.layout_pointy, Tile.Point(28,28), Tile.Point(x/2,y/2))
 
     while (error == 0):
 
         pygame_object.game_display.fill(Colour.black)
+
+        pygame_object.draw_view()
+
+        pygame_object.draw_stats(universe.factions[universe.turn])
+        pygame_object.draw_action_selected()
+        pygame_object.draw_goal_selected()
+
+        pygame_object.draw_ui_buttons()
+
+        #draw everything, then capture events
 
         error = pygame_object.capture_events()
         #Ui elements selected here
@@ -54,30 +61,6 @@ def main():
 
             pygame_object.mouse_released = False
             pygame_object.clear_ui_elements()
-
-        for planet in universe.universe_map:
-
-            points = Tile.polygon_corners(layout_rim, universe.universe_map[planet].location)
-            new_points = hex_point_to_pygame_point(points)
-
-            pygame_object.draw_polygon(Colour.white, new_points)
-
-        for planet in universe.universe_map:
-            #white tiling behind systems
-            points = Tile.polygon_corners_with_spacing(layout, universe.universe_map[planet].location, 1.155)
-            new_points = hex_point_to_pygame_point(points)
-
-            if (universe.universe_map[planet].faction != None):
-                pygame_object.draw_polygon(universe.universe_map[planet].faction.colour, new_points)
-                #print(universe.universe_map[planet].faction.colour)
-            else:
-                pygame_object.draw_polygon(Colour.black, new_points)
-
-        pygame_object.draw_stats(universe.factions[universe.turn])
-        pygame_object.draw_action_selected()
-        pygame_object.draw_goal_selected()
-
-        pygame_object.draw_ui_buttons()
     
         pygame_object.update()
 
