@@ -42,25 +42,22 @@ def main():
 
         pygame_object.draw_view()
 
-        pygame_object.draw_stats(universe.factions[universe.turn])
-        pygame_object.draw_action_selected()
-        pygame_object.draw_goal_selected()
-
-        pygame_object.draw_ui_buttons()
+        pygame_object.draw_ui(universe.factions[universe.turn])
 
         #draw everything, then capture events
 
         error = pygame_object.capture_events()
         #Ui elements selected here
-        if (pygame_object.mouse_released):
+        if (pygame_object.mouse_down):
             #mouse button finished clicking button
-            if (pygame_object.ui_element_clicked[0]): #end turn button clicked
+            if (pygame_object.ui.ui_element_clicked[0]): #end turn button clicked
                 universe.turn = (universe.turn + 1) % len(universe.factions)
                 pygame_object.turn_end()
+                pygame_object.clear_ui_elements()
 
 
-            pygame_object.mouse_released = False
-            pygame_object.clear_ui_elements()
+            #pygame_object.mouse_released = False
+            # pygame_object.clear_ui_elements()
     
         pygame_object.update()
 
