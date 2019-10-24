@@ -50,9 +50,13 @@ def main():
         #Ui elements selected here
         if (pygame_object.mouse_down):
             #mouse button finished clicking button
-            if (pygame_object.ui.ui_element_clicked[0]): #end turn button clicked
+            if (pygame_object.ui.ui_element_clicked[0] and pygame_object.current_view == 0): #end turn button clicked
                 universe.turn = (universe.turn + 1) % len(universe.factions)
                 pygame_object.turn_end()
+                pygame_object.clear_ui_elements()
+
+            elif (pygame_object.ui.ui_element_clicked[0] and pygame_object.current_view == 1):
+                pygame_object.current_view = 0
                 pygame_object.clear_ui_elements()
 
 

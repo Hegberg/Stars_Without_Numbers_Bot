@@ -27,12 +27,14 @@ class Pygame_Object(object):
         self.mouse_pos = None
 
         self.universe = universe
+        self.selected_system = None
 
         self.layout_rim = Tile.Layout(Tile.layout_pointy, Tile.Point(24,24), Tile.Point(x/2,y/2))
         self.layout = Tile.Layout(Tile.layout_pointy, Tile.Point(28,28), Tile.Point(x/2,y/2))
 
         self.current_view = 0 #0 -> universe view, 1 inner system view
-        self.drawn_systems = [] #system hex list
+
+        self.drawn_systems = [] #[hex, system] list items
         self.drawn_planets = []
 
         self.ui_text = pygame.font.SysFont("timesnewroman", 20)
@@ -101,6 +103,9 @@ class Pygame_Object(object):
     def draw_rectangle(self, colour, points, width = 0):
         return pygame.draw.rect(self.game_display, colour, points, width)
 
+    def draw_circle(self, colour, center, radius, width = 0):
+        return pygame.draw.circle(self.game_display, colour, center, radius, width)
+
     def render_text(self, text, stat, x, y):
         text_surface = self.ui_text.render(text + str(stat), False, (255, 255, 255))
         center = (x, y)
@@ -113,6 +118,7 @@ class Pygame_Object(object):
                 result = self.check_polygon(self.drawn_systems[i][0])
                 if (result):
                     #change view to inner system view for the selected system
+                    self.selected_system = self.drawn_systems[i][1]
                     self.current_view = 1
                     return 1
 
@@ -169,15 +175,21 @@ class Pygame_Object(object):
             new_points = self.hex_point_to_pygame_point(points)
 
             if (self.universe.universe_map[system].controlling_faction != None):
-                self.drawn_systems.append([new_points,system])
+                self.drawn_systems.append([new_points, self.universe.universe_map[system]])
                 self.draw_polygon(self.universe.universe_map[system].controlling_faction.colour, new_points)
                 #print(universe.universe_map[system].faction.colour)
             else:
-                self.drawn_systems.append([new_points,system])
+                self.drawn_systems.append([new_points, self.universe.universe_map[system]])
                 self.draw_polygon(Colour.black, new_points)
 
     def draw_inner_system_view(self):
         self.drawn_planets.clear()
+
+        x_start = (self.x/2) - ((len(self.selected_system.planets) - 1) * 100)
+
+        for i in range(len(self.selected_system.planets)):
+            self.draw_circle(self.selected_system.planets[i].planet_type.colour, (int(x_start + (i * 200)), int(self.y/2)), 50) #colour, center, radius
+
 
     def draw_view(self):
         if (self.current_view == 0):#universe view

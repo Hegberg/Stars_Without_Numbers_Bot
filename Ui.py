@@ -15,6 +15,9 @@ class Ui:
         self.actions_dimensions = [(150,self.y - 50), (100, 50)]#top left point, dimensions
         self.goals_dimensions = [(300,self.y - 50), (100, 50)]#top left point, dimensions
 
+        self.return_to_systems_dimensions = [(0,self.y - 100), (100, 100)]#top left point, dimensions
+
+
         self.end_turn_rect = None
         self.actions_rect = None
         self.goals_rect = None
@@ -40,10 +43,15 @@ class Ui:
         self.current_goal = None
 
     def draw_ui_buttons(self):
-        if (self.ui_element_clicked[0]):
+        #only draw end turn in system view, if in inner system have return to system
+        if (self.ui_element_clicked[0] and self.draw.current_view == 0):
             self.draw_end_turn(Colour.gray)
-        else:
+        elif (self.draw.current_view == 0):
             self.draw_end_turn(Colour.white)
+        elif (self.ui_element_clicked[0] and self.draw.current_view == 1):
+            self.draw_return_to_systems(Colour.gray)
+        elif (self.draw.current_view == 1):
+            self.draw_return_to_systems(Colour.white)
 
         if (self.ui_element_clicked[1]):
             #grey button and create sub menu
@@ -84,6 +92,18 @@ class Ui:
 
         text_surface = self.ui_text.render("Goals", False, (0, 0, 0))
         center = (self.goals_dimensions[0][0] + 5, self.goals_dimensions[0][1] + 15)
+        self.draw.game_display.blit(text_surface, center)
+
+    def draw_return_to_systems(self, colour):
+        self.end_turn_rect = self.draw.draw_rectangle(colour, self.return_to_systems_dimensions)
+        self.draw.draw_rectangle(Colour.dark_gray, self.return_to_systems_dimensions, 3)
+
+        text_surface = self.ui_text.render("Return To", False, (0, 0, 0))
+        center = (self.return_to_systems_dimensions[0][0] + 5, self.return_to_systems_dimensions[0][1] + 15)
+        self.draw.game_display.blit(text_surface, center)
+
+        text_surface = self.ui_text.render("System", False, (0, 0, 0))
+        center = (self.end_turn_dimensions[0][0] + 5, self.end_turn_dimensions[0][1] + 15)
         self.draw.game_display.blit(text_surface, center)
 
 

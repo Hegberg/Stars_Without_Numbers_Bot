@@ -7,6 +7,7 @@ import Tile
 import Planet
 import System
 import Faction
+import Planet_Type
 
 names = ["Empire", "Republic", "Pirates", "Psionics", 
         "Rebellion", "Natives", "Aliens", "Robots"]
@@ -54,6 +55,16 @@ class Universe:
                 system = System.System(hex, None, None)#location, faction, planets
                 planets = []
                 for i in range(random.randint(1,4)):
-                    planets.append(Planet.Planet(hex, system, None, None))#location, system, faction, bases
+                    planet_type = random.randint(1,5)
+                    if (planet_type == 1):
+                        planets.append(Planet.Planet(hex, system, None, None, Planet_Type.Desert()))#location, system, faction, bases, planet_type
+                    elif (planet_type == 2):
+                        planets.append(Planet.Planet(hex, system, None, None, Planet_Type.MoltenLava()))#location, system, faction, bases, planet_type
+                    elif (planet_type == 3):
+                        planets.append(Planet.Planet(hex, system, None, None, Planet_Type.Forset()))#location, system, faction, bases, planet_type
+                    elif (planet_type == 4):
+                        planets.append(Planet.Planet(hex, system, None, None, Planet_Type.Ocean()))#location, system, faction, bases, planet_type
+                    elif (planet_type == 5):
+                        planets.append(Planet.Planet(hex, system, None, None, Planet_Type.Tundra()))#location, system, faction, bases, planet_type
                 system.update_planets(planets)
                 self.universe_map[q, r, -q - r] = (system)

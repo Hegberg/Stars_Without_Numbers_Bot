@@ -15,6 +15,14 @@ gray = (200,200,200)
 dark_gray = (100,100,100)
 black = (0,0,0)
 
+#planets
+desert = (194,178,128)
+tundra = (153,238,255)
+moltenLava = (207,16,32)
+moltenLavaDark = (72,60,50)
+forest = (1,68,33)
+ocean = (0,119,190)
+
 faction_colours = []
 faction_colours.append(red) 
 faction_colours.append(red_green)
