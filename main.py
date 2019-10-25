@@ -55,7 +55,9 @@ def main():
                 pygame_object.turn_end()
                 pygame_object.clear_ui_elements()
 
-            elif (pygame_object.ui.ui_element_clicked[0] and pygame_object.current_view == 1):
+                pygame_object.turn_start() #update goals for new faction
+
+            elif (pygame_object.ui.ui_element_clicked[0] and pygame_object.current_view == 1): #return from inner system view
                 pygame_object.current_view = 0
                 pygame_object.clear_ui_elements()
 

@@ -3,6 +3,7 @@ import pygame
 
 import Draw
 import Colour
+import Goals
 
 class Ui:
     def __init__(self, draw, x, y):
@@ -123,17 +124,18 @@ class Ui:
                 result = self.check_sub_ui_box(i, self.sub_goal_buttons[i])
                 if (result):
                     self.current_goal = i
-                    self.clear_ui_elements() #sub ui element slected, drop menu 
+                    self.draw.universe.factions[self.draw.universe.turn].goal = i
+                    self.clear_ui_elements() #sub ui element slected, drop menu
             #print(self.ui_sub_element_clicked)
                     return 1 #once done checking sub buttons, no need to check rest, 
                     #keep from checking possible objects behind it
             return 0
 
-        if (self.check_ui_box(0, self.end_turn_rect)): 
+        if (self.check_ui_box(0, self.end_turn_rect)):
             return 1
-        if (self.check_ui_box(1, self.actions_rect)): 
+        if (self.check_ui_box(1, self.actions_rect)):
             return 1
-        if (self.check_ui_box(2, self.goals_rect)): 
+        if (self.check_ui_box(2, self.goals_rect)):
             return 1
 
         return 0

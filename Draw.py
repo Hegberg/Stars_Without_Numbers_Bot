@@ -153,6 +153,10 @@ class Pygame_Object(object):
         self.ui.current_action = None
         self.ui.current_goal = None
 
+    def turn_start(self):
+        self.ui.current_action = None
+        self.ui.current_goal = self.universe.factions[self.universe.turn].goal
+
     def hex_point_to_pygame_point(self, points):#list of hex points
         pygame_points = []
         for point in points:
