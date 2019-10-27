@@ -59,12 +59,15 @@ class Pygame_Object(object):
                 self.mouse_down = True
                 if (not(self.mouse_released)):
                     return 0
-                if (self.ui.check_where_mouse_clicked()): 
+                if (self.ui.check_where_mouse_clicked()):
                     return 0
 
                 #if ui element not pressed, check if no ui sub menu open, if one is clear sub menu and return
                 for i in range(len(self.ui.ui_element_clicked)):
                     if (self.ui.ui_element_clicked[i]):
+                        self.ui.clear_ui_elements()
+                        return 0
+                    if (self.ui.selecting_asset):
                         self.ui.clear_ui_elements()
                         return 0
                 #otherwise continue
@@ -205,5 +208,6 @@ class Pygame_Object(object):
         self.ui.draw_stats(faction)
         self.ui.draw_action_selected()
         self.ui.draw_goal_selected()
+        self.ui.draw_sub_asset_selection()
 
         self.ui.draw_ui_buttons()
