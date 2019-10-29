@@ -19,7 +19,7 @@ class Ui:
 
         self.return_to_systems_dimensions = [(0,self.y - 100), (100, 100)]#top left point, dimensions
 
-        self.asset_selection_dimensions = [(500, 50), (250, 50)]#top left point, dimensions
+        self.asset_selection_dimensions = [(500, 50), (300, 50)]#top left point, dimensions
 
         self.end_turn_rect = None
         self.actions_rect = None
@@ -281,7 +281,9 @@ class Ui:
 
     def draw_sub_asset_selection(self):
         if (self.selecting_asset):
-            self.draw_assets_from_list(self.cunning_assets)
+            amount_of_drawn_elements = self.draw_assets_from_list(self.cunning_assets)
+            if (self.asset_selection_dimensions[1][1] * amount_of_drawn_elements > self.y): #check if not all elemnts on screen, if so creat scrollbar
+                pass
             #temp = [Assets.cunning1_assets, Assets.cunning2_assets, Assets.cunning3_assets]
             #self.draw_assets_from_list(temp)
         pass
@@ -311,8 +313,10 @@ class Ui:
                 #self.ui_asset_button[i].append(self.draw.draw_rectangle(Colour.white, sub_dimensions))
                 self.draw.draw_rectangle(Colour.dark_gray, sub_dimensions, 2)
 
-                text_surface = self.ui_text.render(asset_list[i][j].name, False, (0, 0, 0))
+                text_surface = self.ui_text.render(str(asset_list[i][j].name) + ", Hp: " + str(asset_list[i][j].hp) + ", Cost: " + str(asset_list[i][j].cost), False, (0, 0, 0))
                 center = (sub_dimensions[0][0] + 5, sub_dimensions[0][1] + 15)
                 self.draw.game_display.blit(text_surface, center)
 
                 current_total_index += 1
+
+        return current_total_index # 1 to total amount
